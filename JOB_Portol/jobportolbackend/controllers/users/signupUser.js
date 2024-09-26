@@ -4,7 +4,7 @@ const bcrpyt = require("bcrypt");
 
 const signupUser = async (req , res) => {
     try{
-        const exist = await usersSchema.findOne({username : req.body.username})
+        const exist = await usersSchema.findOne({email : req.body.email})
         if (exist){
             console.log("User already exists");
             res.status(401).send(exist);

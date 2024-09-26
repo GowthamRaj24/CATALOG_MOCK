@@ -1,7 +1,9 @@
 import './App.css';
+// @ts-ignore
 import LoginPage from './pages/loginPage/loginPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignupPage from './pages/signupPage/signupPage';
+// @ts-ignore
 import LandingPage from './pages/landingPage/landingPage';
 
 function App() {

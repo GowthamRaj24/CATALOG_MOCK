@@ -28,7 +28,7 @@ const SignupPage = () => {
             .then((res) => {
                 setLoadButton(false);
                 setHashedPassword(res.data.hashed_password);
-                axios.post("http://localhost:4001/users/sendOTP", { username: email })
+                axios.post("http://localhost:4001/users/sendOTP", { email: email })
                     .then((response) => {
                         setGenOtp(response.data.otp);
                         setCurr(1);
@@ -54,15 +54,18 @@ const SignupPage = () => {
     }
 
     const onSubmitDetails = (event) => {
+        console.log("Executing Submit Details");
         event.preventDefault();
         axios.post("http://localhost:4001/users/addUser", { name, email, password: hashedPassword, role, profilePicture, phone, location, bio, resume, company })
             .then((response) => {
-                axios.post("http://localhost:4001/users/loginUser", { username: email, password })
+                console.log("Executing LoginUser" + email + " --> "+ hashedPassword);
+                axios.post("http://localhost:4001/users/loginUser", { email: email, password: password })
                     .then((res) => {
                         const responseData = res.data;
+                        console.log(responseData);
                         const token = responseData.token;
                         localStorage.setItem("token", `Bearer ${token}`);
-                        window.location.href = "/home";
+                        window.location.href = "/landing";
                     })
             })
             .catch((err) => {

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import JobSeekerLanding from '../../components/jobSeekerLanding/jobSeekerLanding';
+// @ts-ignore
+import JobSeekerLanding from '../../components/jobSeekerLanding/jobSeekerLanding'; 
+// @ts-ignore
 import EmployerLanding from '../../components/employerLanding/employerLanding';
 import "./landingPage.css";
 
 const LandingPage = () => {
     const [role, setRole] = useState('job_seeker');
     const [showLanding, setShowLanding] = useState(false);
-
     const handleRoleSelection = (selectedRole) => {
         setRole(selectedRole);
         setShowLanding(true);

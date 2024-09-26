@@ -4,7 +4,8 @@ const usersSchema = require("../../models/usersSchema");
 
 const loginUser =async (req , res) => {
     try{
-        const userData = await usersSchema.findOne({username : req.body.username});
+        const userData = await usersSchema.findOne({email : req.body.email});
+        console.log("UserData in login" + userData);
         if(!userData){
             res.status(400).send("User not found");
             return;
@@ -16,7 +17,6 @@ const loginUser =async (req , res) => {
         }
         const token = jwt.sign({userId : userData._id} , "mysecretkey");
         res.status(200).send({token : token});
-        
         return;
     }
     catch(err){
