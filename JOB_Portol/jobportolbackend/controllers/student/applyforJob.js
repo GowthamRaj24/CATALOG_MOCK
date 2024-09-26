@@ -1,51 +1,28 @@
-const JobPosting = require('../models/JobPostingsSchema');
-const JobApplication = require('../models/JobApplicationsSchema');
-const User = require('../models/User');
+const JobPosting = require('../../models/JobPosting');
+const User = require('../../models/User');
 
 const applyForJob = async (req, res) => {
-    try {
-        const { jobId } = req.params;
-        const { coverLetter, resume } = req.body;
-        const applicantId = req.user._id;
+    const { jobId } = req.body;
 
-        const jobPosting = await JobPosting.findById(jobId);
-        if (!jobPosting) {
-            return res.status(404).json({ message: "Job posting not found." });
+    try {
+        const job = await JobPosting.findById(jobId);
+
+        if (!job || job.status !== 'active' || !job.acceptingApplications) {
+            return res.status(400).json({ message: "Cannot apply for this job." });
         }
 
-        const existingApplication = await JobApplication.findOne({
-            jobPosting: jobId,
-            applicant: applicantId
-        });
-
-        if (existingApplication) {
+        if (job.applicants.includes(req.user._id)) {
             return res.status(400).json({ message: "You have already applied for this job." });
         }
 
-        const user = await User.findById(applicantId);
-        const resumeToUse = resume || user.resume;
+        job.applicants.push(req.user._id);
+        await job.save();
 
-        if (!resumeToUse) {
-            return res.status(400).json({ message: "Please provide a resume." });
-        }
-
-        const newApplication = new JobApplication({
-            jobPosting: jobId,
-            applicant: applicantId,
-            resume: resumeToUse,
-            coverLetter: coverLetter || '',
-        });
-
-        await newApplication.save();
-
-        jobPosting.applicants.push(applicantId);
-        await jobPosting.save();
-
-        res.status(201).json({ message: "Application submitted successfully!" });
+        res.status(200).json({ message: "Application successful!" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error. Please try again later." });
     }
 };
 
-exports.applyForJob = applyForJob;
+module.exports = applyForJob;

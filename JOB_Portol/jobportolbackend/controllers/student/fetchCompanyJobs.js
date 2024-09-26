@@ -1,18 +1,10 @@
-const Company = require('../models/CompaniesSchema');
-const JobPosting = require('../models/JobPostingsSchema');
+const JobPosting = require('../../models/JobPosting');
 
 const fetchCompanyJobs = async (req, res) => {
     try {
-        const { companyId } = req.params;
+        const jobs = await JobPosting.find({ employer: req.user._id });
 
-        const company = await Company.findById(companyId);
-        if (!company) {
-            return res.status(404).json({ message: "Company not found." });
-        }
-
-        const jobs = await JobPosting.find({ company: companyId });
-
-        if (!jobs || jobs.length === 0) {
+        if (!jobs.length) {
             return res.status(404).json({ message: "No job postings found for this company." });
         }
 
@@ -23,6 +15,4 @@ const fetchCompanyJobs = async (req, res) => {
     }
 };
 
-module.exports = {
-    fetchCompanyJobs
-};
+module.exports = fetchCompanyJobs;

@@ -1,12 +1,21 @@
-const JobPosting = require('../models/JobPosting');
+const JobPostingsSchema = require('../../models/jobPostingsSchema');
 
 const fetchAllJobs = async (req, res) => {
-    try {
-        const now = new Date();
-        const jobs = await JobPosting.find({ expiresAt: { $gt: now }, status: 'active' });
+    const { location, jobType, skillsRequired } = req.query;
 
-        if (!jobs || jobs.length === 0) {
-            return res.status(404).json({ message: "No job postings found." });
+    try {
+        const query = {
+            status: 'active',
+            acceptingApplications: true,
+            ...(location && { location }),
+            ...(jobType && { jobType }),
+            ...(skillsRequired && { skillsRequired: { $in: skillsRequired.split(',') } })
+        };
+
+        const jobs = await JobPosting.find(query);
+
+        if (!jobs.length) {
+            return res.status(404).json({ message: "No jobs found matching your criteria." });
         }
 
         res.status(200).json({ jobs });
