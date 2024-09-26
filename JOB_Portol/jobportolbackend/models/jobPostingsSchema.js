@@ -20,8 +20,8 @@ const jobPostingSchema = new Schema({
         required: true
     },
     salaryRange: {
-        min: Number,
-        max: Number
+        min: { type: Number },
+        max: { type: Number }
     },
     jobType: {
         type: String,
@@ -41,6 +41,10 @@ const jobPostingSchema = new Schema({
         enum: ['active', 'closed'],
         default: 'active'
     },
+    acceptingApplications: {
+        type: Boolean,
+        default: true
+    },
     postedAt: {
         type: Date,
         default: Date.now
@@ -49,5 +53,14 @@ const jobPostingSchema = new Schema({
         type: Date,
     }
 });
+
+
+jobPostingSchema.methods.checkExpiration = function() {
+    const now = new Date();
+    if (this.expiresAt && this.expiresAt <= now) {
+        this.status = 'closed';
+        this.acceptingApplications = false;
+    }
+};
 
 module.exports = mongoose.model('JobPosting', jobPostingSchema);
