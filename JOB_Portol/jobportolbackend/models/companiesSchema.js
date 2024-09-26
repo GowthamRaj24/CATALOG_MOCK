@@ -26,6 +26,14 @@ const companySchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    verified : {
+        type : Boolean,
+        default : false
+    },
+    blocked : {
+        type: Boolean,
+        default: false
     }
 });
 

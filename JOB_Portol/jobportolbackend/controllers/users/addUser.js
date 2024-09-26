@@ -14,8 +14,6 @@ const addUser = async (req, res) => {
         });
         await user.save();
         console.log("User Created");
-
-
         res.status(200).send();
     }
     catch(err){

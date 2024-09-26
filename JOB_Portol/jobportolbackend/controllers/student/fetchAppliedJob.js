@@ -1,6 +1,6 @@
-const JobPosting = require('../../models/JobPosting');
+const JobPosting = require('../../models/jobPostingsSchema');
 
-const fetchAppliedJobs = async (req, res) => {
+const fetchAppliedJob = async (req, res) => {
     try {
         const jobs = await JobPosting.find({ applicants: req.user._id });
 
@@ -15,4 +15,4 @@ const fetchAppliedJobs = async (req, res) => {
     }
 };
 
-module.exports = fetchAppliedJobs;
+module.exports = fetchAppliedJob;

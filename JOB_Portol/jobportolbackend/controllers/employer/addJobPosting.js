@@ -1,4 +1,4 @@
-const JobPosting = require('../../models/JobPosting');
+const JobPosting = require('../../models/jobPostingsSchema');
 
 const addJobPosting = async (req, res) => {
     const { title, description, location, salaryRange, jobType, skillsRequired, experienceRequired, expiresAt } = req.body;

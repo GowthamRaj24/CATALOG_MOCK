@@ -1,9 +1,9 @@
 const Company = require('../../models/companiesSchema');
 
 const addCompany = async (req, res) => {
-    const { name, location, description } = req.body;
+    const { employer, name, location, description, website, companyLogo, verified, blocked } = req.body;
 
-    const newCompany = new Company({ name, location, description });
+    const newCompany = new Company({ employer, name, location, description, website, companyLogo, verified, blocked });
 
     try {
         await newCompany.save();

@@ -20,5 +20,4 @@ routes
     .post('/getuserById' , getUserById.getUserById)
     .post('/changePassword' , changePassword.changePassword);
 
-
 exports.route = routes;

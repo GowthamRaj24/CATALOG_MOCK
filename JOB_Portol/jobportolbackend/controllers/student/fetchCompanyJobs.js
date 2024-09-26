@@ -1,4 +1,4 @@
-const JobPosting = require('../../models/JobPosting');
+const JobPosting = require('../../models/jobPostingsSchema');
 
 const fetchCompanyJobs = async (req, res) => {
     try {

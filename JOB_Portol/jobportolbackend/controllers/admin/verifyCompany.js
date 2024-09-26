@@ -2,7 +2,6 @@ const Company = require('../../models/companiesSchema');
 
 const verifyCompany = async (req, res) => {
     const { companyId } = req.params;
-
     try {
         const company = await Company.findById(companyId);
 

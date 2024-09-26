@@ -1,5 +1,5 @@
-const JobPosting = require('../../models/JobPosting');
-const User = require('../../models/User');
+const JobPosting = require('../../models/jobPostingsSchema');
+
 
 const applyForJob = async (req, res) => {
     const { jobId } = req.body;
@@ -10,7 +10,6 @@ const applyForJob = async (req, res) => {
         if (!job || job.status !== 'active' || !job.acceptingApplications) {
             return res.status(400).json({ message: "Cannot apply for this job." });
         }
-
         if (job.applicants.includes(req.user._id)) {
             return res.status(400).json({ message: "You have already applied for this job." });
         }

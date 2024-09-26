@@ -1,5 +1,5 @@
-const Company = require('../models/CompaniesSchema');
-const Employee = require('../models/usersSchema');
+const Company = require('../../models/companiesSchema');
+const Employee = require('../../models/companiesSchema');
 
 const fetchCompanyEmployees = async (req, res) => {
     try {
