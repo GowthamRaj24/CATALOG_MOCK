@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import JobListing from '../jobApplication/jobApplication';
+import JobApplication from '../jobApplication/jobApplication';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -12,8 +12,9 @@ const JobSeekerJobs = () => {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await axios.get('http://localhost:4001/student/fetchAllJobs');
-                setJobs(response.data.jobs);
+                const response = await axios.post('http://localhost:4001/students/fetchAllJobs');
+                setJobs(response.data);
+                console.log(response.data);
             } catch (err) {
                 setError('Failed to load job listings.');
             }
@@ -24,7 +25,7 @@ const JobSeekerJobs = () => {
 
     const handleApply = async (jobId) => {
         try {
-            const response = await axios.post(`http://localhost:4001/student/applyforJob` , {jobId : jobId});
+            const response = await axios.post(`http://localhost:4001/students/applyforJob` , {jobId : jobId});
             if (response.status === 200) {
                 alert('Successfully applied for the job!');
             }
@@ -36,11 +37,10 @@ const JobSeekerJobs = () => {
 
     return (
         <div className="container my-5">
-            <h2 className="text-center mb-4">Available Job Listings</h2>
-            {error && <p className="alert alert-danger">{error}</p>}
-            {jobs.length > 0 ? (
+
+            {jobs ? (
                 jobs.map((job) => (
-                    <JobListing key={job._id} job={job} onApply={handleApply} />
+                    <JobApplication key={job._id} job={job} onApply={handleApply} />
                 ))
             ) : (
                 <p className="text-center">No jobs available at the moment.</p>

@@ -7,15 +7,14 @@ import JobSeekerLanding from '../../components/jobSeekerLanding/jobSeekerLanding
 
 const LandingPage = () => {
     const { userData, userLoading } = useContext(UserDataContext);
-    const role = userData?.role;
-
+    const role = userData?.role || null;
     if (userLoading) {
         return <div>Loading...</div>;
     }
 
     return (
         <div>
-            {role === 'job_seeker' ? <EmployerLanding /> : <JobSeekerLanding />}
+            {role === 'job_seeker' ? <JobSeekerLanding /> : <EmployerLanding />}
         </div>
     );
 };

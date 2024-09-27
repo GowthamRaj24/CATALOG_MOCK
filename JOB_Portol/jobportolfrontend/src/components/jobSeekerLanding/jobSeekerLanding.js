@@ -12,9 +12,11 @@ const JobSeekerLanding = () => {
                 localStorage.clear();
                 window.location.href = '/login';
             }}/>
-        <h1>Job Seeker Landing Page</h1>
-        <p>This is where job seekers can find relevant information
-            and tools to help them find a job.</p>
+        <div className="text-center">
+            <h1>Job Seeker Landing Page</h1>
+            <p>This is where job seekers can find relevant information
+                and tools to help them find a job.</p>
+        </div>
         <JobSeekerJobs />
         </>
     )

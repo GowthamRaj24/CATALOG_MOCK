@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const JobListing = ({ job, onApply }) => {
+const JobApplication = ({ job, onApply }) => {
     const { title, description, location, salaryRange, jobType, skillsRequired, status } = job;
 
     const handleApplyClick = () => {
@@ -39,4 +39,4 @@ const JobListing = ({ job, onApply }) => {
     );
 };
 
-export default JobListing;
+export default JobApplication;
