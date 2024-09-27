@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../Header/Header';
 import { useContext } from 'react';
 import { UserDataContext } from '../../context/userData';
+import EmployeeJobs from '../employeeJobs/employeeJobs';
 
 const EmployerLanding = () => {
     const {userData , userLoading , authenticated} = useContext(UserDataContext);   
@@ -13,6 +14,7 @@ const EmployerLanding = () => {
             }}/>
             <h1>Welcome to the Employer Landing Page</h1>
             <p>This is where employers can find relevant information and tools.</p>
+            <EmployeeJobs />
         </div>
     );
 }

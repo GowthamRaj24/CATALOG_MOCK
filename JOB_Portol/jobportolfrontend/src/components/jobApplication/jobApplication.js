@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { UserDataContext } from '../../context/userData';
+import { ProgressBar } from 'react-bootstrap';
 
 const JobApplication = ({ job, onApply }) => {
     const { title, description, location, salaryRange, jobType, skillsRequired, status } = job;
+    const { userData } = useContext(UserDataContext);
+    const [applied, setApplied] = useState(userData?.appliedJobs?.includes(job._id));
+    const [applicationStatus, setApplicationStatus] = useState('');
+
+    useEffect(() => {
+        if (applied) {
+            // Simulate fetching application status from an API
+            setApplicationStatus('Your application is under review.');
+        }
+    }, [applied]);
 
     const handleApplyClick = () => {
         if (status === 'active') {
             onApply(job._id);
+            setApplied(true);
         }
     };
 
@@ -23,12 +36,23 @@ const JobApplication = ({ job, onApply }) => {
                 </p>
                 <p className="card-text">{description}</p>
                 {status === 'active' ? (
-                    <button
-                        className="btn btn-primary"
-                        onClick={handleApplyClick}
-                    >
-                        Apply Now
-                    </button>
+                    applied ? (
+                        <>
+                            <button className="btn btn-secondary" disabled>
+                                Applied
+                            </button>
+                            <div className="mt-2">
+                                <strong>Application Status:</strong> {applicationStatus}
+                            </div>
+                        </>
+                    ) : (
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleApplyClick}
+                        >
+                            Apply Now
+                        </button>
+                    )
                 ) : (
                     <button className="btn btn-secondary" disabled>
                         Job Closed

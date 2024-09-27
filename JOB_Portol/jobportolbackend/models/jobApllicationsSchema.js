@@ -29,6 +29,10 @@ const jobApplicationSchema = new Schema({
     },
     reviewedAt: {
         type: Date
+    },
+    appliedJobs : {
+        type: Array,
+        default: []
     }
 });
 

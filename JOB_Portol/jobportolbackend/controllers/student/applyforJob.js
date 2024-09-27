@@ -1,24 +1,29 @@
 const JobPosting = require('../../models/jobPostingsSchema');
-
+const User = require('../../models/usersSchema');
 
 const applyForJob = async (req, res) => {
-    const { jobId } = req.body.jobId;
+    console.log(req.body)
+    const jobId = req.body.jobId;
 
     try {
         const job = await JobPosting.findById(jobId);
-
-        if (!job || job.status !== 'active' || !job.acceptingApplications) {
+        const student = await User.findById(req.body._id);
+        if (job.status !== 'active') {
             return res.status(400).json({ message: "Cannot apply for this job." });
         }
-        if (job.applicants.includes(req.user._id)) {
+        if (job.applicants.includes(req.body._id)) {
             return res.status(400).json({ message: "You have already applied for this job." });
         }
 
-        job.applicants.push(req.user._id);
+        
+        student.appliedJobs.push(jobId);
+        job.applicants.push(req.body._id);
+        await student.save();
         await job.save();
 
         res.status(200).json({ message: "Application successful!" });
     } catch (error) {
+        console.log(error);
         console.error(error);
         res.status(500).json({ message: "Server error. Please try again later." });
     }

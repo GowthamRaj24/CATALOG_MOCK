@@ -5,9 +5,9 @@ import JobApplication from '../jobApplication/jobApplication';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext } from 'react';
 import { UserDataContext } from '../../context/userData';
+import EmployeeApplication from '../employeeApplication/employeeApplication';
 
-
-const JobSeekerJobs = () => {
+const EmployeeJobs = () => {
     const [jobs, setJobs] = useState([]);
     const [error, setError] = useState('');
     const {userData , userLoading , authenticated} = useContext(UserDataContext);
@@ -15,9 +15,11 @@ const JobSeekerJobs = () => {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await axios.post('http://localhost:4001/students/fetchAllJobs');
-                setJobs(response.data);
+                console.log(userData._id);
+                const response = await axios.post('http://localhost:4001/employer/fetchMyPostings' , {Id : userData._id});
+                setJobs(response.data.jobPostings);
                 console.log(response.data);
+
             } catch (err) {
                 setError('Failed to load job listings.');
             }
@@ -26,24 +28,17 @@ const JobSeekerJobs = () => {
         fetchJobs();
     }, []);
 
-    const handleApply = async (jobId) => {
-        try {
-            const response = await axios.post(`http://localhost:4001/students/applyforJob` ,{_id : userData?._id ,jobId : jobId});
-            if (response.status === 200) {
-                alert('Successfully applied for the job!');
-            }
-        } catch (err) {
-            console.error(err.response);
-            alert(err.response.data.message);
-        }
-    };
+    const handleApply = () => {
+        console.log("Hello");
+    }
+
 
     return (
         <div className="container my-5">
 
-            {jobs ? (
+            {jobs && jobs.length > 0? (
                 jobs.map((job) => (
-                    <JobApplication key={job._id} job={job} onApply={handleApply} />
+                    <EmployeeApplication key={job._id} job={job} onApply={handleApply} />
                 ))
             ) : (
                 <p className="text-center">No jobs available at the moment.</p>
@@ -52,4 +47,4 @@ const JobSeekerJobs = () => {
     );
 };
 
-export default JobSeekerJobs;
+export default EmployeeJobs;

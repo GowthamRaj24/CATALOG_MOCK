@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import url from "../url";
 import axios from "axios";
 
 const UserDataContext = createContext();
@@ -11,7 +10,6 @@ const UserDataProvider = ({ children }) => {
     const [authenticated , setAuthenticated] = useState(false);
 
     const fetchUserData = () => {
-
         let token  = localStorage.getItem('token');
         if (token){
             token = token.split(' ')[1];
@@ -21,6 +19,7 @@ const UserDataProvider = ({ children }) => {
             setUserData(res.data);
             setAuthenticated(true);
             setLoading(false);
+
         }).catch((err) => {
             setError(err);
             setLoading(false);

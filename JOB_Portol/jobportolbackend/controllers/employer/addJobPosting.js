@@ -1,3 +1,4 @@
+// @ts-ignore
 const JobPosting = require('../../models/jobPostingsSchema');
 
 const addJobPosting = async (req, res) => {

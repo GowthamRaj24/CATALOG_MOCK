@@ -17,7 +17,6 @@ const usersSchema = new Schema({
     },
     password: {
         type: String,
-        
     },
     role: {
         type: String,
@@ -55,6 +54,10 @@ const usersSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    appliedJobs : {
+        type: Array,
+        default: []
     }
 });
 
