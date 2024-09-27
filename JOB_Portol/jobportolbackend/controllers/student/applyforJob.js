@@ -2,7 +2,7 @@ const JobPosting = require('../../models/jobPostingsSchema');
 
 
 const applyForJob = async (req, res) => {
-    const { jobId } = req.body;
+    const { jobId } = req.body.jobId;
 
     try {
         const job = await JobPosting.findById(jobId);

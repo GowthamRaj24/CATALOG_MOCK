@@ -11,6 +11,7 @@ const loginUser =async (req , res) => {
             return;
         }
         const isValid = await bcrypt.compare(req.body.password , userData.password);
+        console.log(isValid)
         if(!isValid){
             res.status(400).send("Invalid Password");
             return;

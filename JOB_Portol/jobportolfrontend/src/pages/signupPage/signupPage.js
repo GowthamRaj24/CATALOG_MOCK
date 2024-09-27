@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import './signupPage.css';
@@ -6,6 +6,7 @@ import logo from '../../assets/logo.jpg';
 
 const SignupPage = () => {
     const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,10 +22,23 @@ const SignupPage = () => {
     const [loadButton, setLoadButton] = useState(true);
     const [hashedPassword, setHashedPassword] = useState('');
     const [genOtp, setGenOtp] = useState('');
+    const [error, setError] = useState('');
+
+    // Automatically set username based on email input
+    useEffect(() => {
+        setUsername(email);
+    }, [email]);
 
     const onSignup = (event) => {
         event.preventDefault();
-        axios.post("http://localhost:4001/users/signupUser", { name, email, password, repassword: password, role })
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
+        axios.post("http://localhost:4001/users/signupUser", {
+            email: email,
+            password: password
+        })
             .then((res) => {
                 setLoadButton(false);
                 setHashedPassword(res.data.hashed_password);
@@ -32,43 +46,52 @@ const SignupPage = () => {
                     .then((response) => {
                         setGenOtp(response.data.otp);
                         setCurr(1);
+                        console.log("OTP Sent" + " --> " + response.data.otp);
                     })
+                    .catch((err) => setError("Failed to send OTP. Please try again later."));
             })
             .catch((err) => {
+                setError("Error during signup. Please try again.");
                 console.error(err);
             });
     }
 
     const checkOTP = () => {
+        if (!userOTP) {
+            setError("Please enter the OTP.");
+            return;
+        }
         axios.post("http://localhost:4001/users/checkOTP", { otp: genOtp, userOTP })
             .then((res) => {
                 if (res.status === 200) {
                     setCurr(2);
                 } else {
-                    alert("Invalid OTP");
+                    setError("Invalid OTP");
                 }
             })
             .catch((err) => {
+                setError("OTP verification failed.");
                 console.error(err);
-            })
+            });
     }
 
     const onSubmitDetails = (event) => {
-        console.log("Executing Submit Details");
         event.preventDefault();
-        axios.post("http://localhost:4001/users/addUser", { name, email, password: hashedPassword, role, profilePicture, phone, location, bio, resume, company })
+        console.log("Adding a user");
+        axios.post("http://localhost:4001/users/addUser", { username, name, email, password: hashedPassword, role, profilePicture, phone, location, bio, resume, company })
             .then((response) => {
-                console.log("Executing LoginUser" + email + " --> "+ hashedPassword);
                 axios.post("http://localhost:4001/users/loginUser", { email: email, password: password })
                     .then((res) => {
-                        const responseData = res.data;
-                        console.log(responseData);
-                        const token = responseData.token;
+                        const token = res.data.token;
                         localStorage.setItem("token", `Bearer ${token}`);
                         window.location.href = "/landing";
                     })
+                    .catch((err) => {
+                        setError("Login failed. Please try again.");
+                    });
             })
             .catch((err) => {
+                setError("Failed to complete registration.");
                 console.error(err);
             });
     }

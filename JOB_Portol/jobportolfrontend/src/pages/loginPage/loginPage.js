@@ -7,7 +7,6 @@ import logo from '../../assets/logo.jpg';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -23,15 +22,13 @@ const Login = () => {
   };
 
   const onLogin = () => {
-    console.log(email , password)
     axios.post("http://localhost:4001/users/loginUser", { email: email, password: password })
-                    .then((res) => {
-                        const responseData = res.data;
-                        console.log(responseData);
-                        const token = responseData.token;
-                        localStorage.setItem("token", `Bearer ${token}`);
-                        window.location.href = "/landing";
-                    })
+      .then((res) => {
+          const responseData = res.data;
+          const token = responseData.token;
+          localStorage.setItem("token", `Bearer ${token}`);
+          window.location.href = "/landing";
+      })
       .catch((err) => {
         console.error(err.response.data);
       });
@@ -52,7 +49,7 @@ const Login = () => {
             <label htmlFor="username">Email</label>
             <input
               type="email"
-              id="username"
+              id="email"
               value={email}
               onChange={handleEmailChange}
               required

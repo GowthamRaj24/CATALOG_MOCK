@@ -1,42 +1,52 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const usersSchema = new Schema({
+    username: {
+        type: String,
+        unique: true,
+        
+    },
     name: {
         type: String,
-        required: true
+        
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        
     },
     password: {
         type: String,
-        required: true
+        
     },
     role: {
         type: String,
         enum: ['job_seeker', 'employer'],
-        required: true
+        default: 'job_seeker'
     },
     profilePicture: {
         type: String,
+        default: ''
     },
     phone: {
         type: String,
+        default: ''
     },
     location: {
         type: String,
+        default: ''
     },
     bio: {
         type: String,
+        default: ''
     },
     resume: {
         type: String,
+        default: ''
     },
     company: { 
         type: String,
+        default: ''
     },
     isVerified: {
         type: Boolean,
@@ -48,4 +58,4 @@ const userSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', usersSchema);

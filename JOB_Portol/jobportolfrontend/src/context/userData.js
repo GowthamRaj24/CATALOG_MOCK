@@ -8,19 +8,28 @@ const UserDataProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
     const [userLoading, setLoading] = useState(true);
     const [userError, setError] = useState(null);
+    const [authenticated , setAuthenticated] = useState(false);
 
     const fetchUserData = () => {
-        const token  = localStorage.getItem('token').split(' ')[1];
 
+        let token  = localStorage.getItem('token');
+        if (token){
+            token = token.split(' ')[1];
         axios.post(`http://localhost:4001/users/userData`, {
             token: token
         }).then((res) => {
             setUserData(res.data);
+            setAuthenticated(true);
             setLoading(false);
         }).catch((err) => {
             setError(err);
             setLoading(false);
         });
+    }
+    else{
+        setLoading(false);
+        setAuthenticated(false);
+    }
     };
 
     useEffect(() => {
@@ -28,7 +37,7 @@ const UserDataProvider = ({ children }) => {
     }, []);
 
     return (
-        <UserDataContext.Provider value={{ userData, userLoading, userError }}>
+        <UserDataContext.Provider value={{ userData, userLoading, userError, authenticated }}>
             {children}
         </UserDataContext.Provider>
     );
