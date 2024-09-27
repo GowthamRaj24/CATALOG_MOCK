@@ -24,14 +24,14 @@ const Login = () => {
 
   const onLogin = () => {
     console.log(email , password)
-    axios.post("http://localhost:4001/users/loginUser", { username: email, password: password })
-      .then((res) => {
-        const responseData = res.data;
-        const token = responseData.token;
-        console.log(token);
-        localStorage.setItem("token", `Bearer ${token}`);
-        window.location.href = "/home";
-      })
+    axios.post("http://localhost:4001/users/loginUser", { email: email, password: password })
+                    .then((res) => {
+                        const responseData = res.data;
+                        console.log(responseData);
+                        const token = responseData.token;
+                        localStorage.setItem("token", `Bearer ${token}`);
+                        window.location.href = "/landing";
+                    })
       .catch((err) => {
         console.error(err.response.data);
       });

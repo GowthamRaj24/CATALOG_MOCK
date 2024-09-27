@@ -4,7 +4,7 @@ const addJobPosting = async (req, res) => {
     const { title, description, location, salaryRange, jobType, skillsRequired, experienceRequired, expiresAt } = req.body;
 
     const newJobPosting = new JobPosting({
-        employer: req.user._id,
+        employer: req.body.user._id,
         title,
         description,
         location,

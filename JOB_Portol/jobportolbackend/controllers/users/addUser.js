@@ -20,6 +20,7 @@ const addUser = async (req, res) => {
             resume: req.body.resume,
             company: req.body.company
         });
+        
         await user.save();
         console.log("User Created");
 
