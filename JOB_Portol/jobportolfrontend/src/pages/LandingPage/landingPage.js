@@ -1,8 +1,13 @@
 import React, { useContext } from 'react';
 import { UserDataContext } from '../../context/userData';
+// @ts-ignore
+import EmployerLanding from '../../components/employerLanding/employerLanding';
+// @ts-ignore
+import JobSeekerLanding from '../../components/jobSeekerLanding/jobSeekerLanding';
 
 const LandingPage = () => {
     const { userData, userLoading } = useContext(UserDataContext);
+    const role = userData?.role;
 
     if (userLoading) {
         return <div>Loading...</div>;
@@ -10,9 +15,7 @@ const LandingPage = () => {
 
     return (
         <div>
-            <h1>User Profile</h1>
-            <p>Name: {userData?.name}</p>
-            <p>Email: {userData?.email}</p>
+            {role === 'job_seeker' ? <EmployerLanding /> : <JobSeekerLanding />}
         </div>
     );
 };
